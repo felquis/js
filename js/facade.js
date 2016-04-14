@@ -1,24 +1,24 @@
 'use strict'
 
 function Count (container) {
-	var _this = this
+	var _this = {}
 
-	this.total = 0
-	this.component = document.querySelector(container)
-	this.buttonElement = this.component.querySelector('button')
-	this.totalElement = this.component.querySelector('.total')
-	this.onButtonClick = function (event) {
+	_this.total = 0
+	_this.component = document.querySelector(container)
+	_this.buttonElement = _this.component.querySelector('button')
+	_this.totalElement = _this.component.querySelector('.total')
+	_this.onButtonClick = function (event) {
 		_this.total += 1
 		_this.publish('increase', _this.total)
 	}
 
-	this.set = function (number) {
+	_this.set = function (number) {
 		_this.total = parseInt(number) || 0
 
 		_this.publish('increase', _this.total)
 	}
 
-	this.init = function () {
+	_this.init = function () {
 		_this.buttonElement.addEventListener('click', _this.onButtonClick)
 
 		_this.subscribe('increase', function(number) {
@@ -27,7 +27,11 @@ function Count (container) {
 		});
 	}
 
-	mediator.installTo(this)
+	mediator.installTo(_this)
 
-	return this
+	return {
+		set: _this.set,
+		init: _this.init,
+		on: _this.subscribe
+	}
 }
